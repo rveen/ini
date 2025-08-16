@@ -466,6 +466,15 @@ func (f *File) parse(reader io.Reader) (err error) {
 		}
 
 		kname, offset, err := readKeyName(f.options.KeyValueDelimiters, line)
+
+		// PATCH rolf
+		if IsErrDelimiterNotFound(err) {
+			section.isRawSection = true
+			section.rawBody += string(line)
+			continue
+		}
+		// END OF PATCH
+
 		if err != nil {
 			switch {
 			// Treat as boolean key when desired, and whole line is key name.
