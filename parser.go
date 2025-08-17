@@ -407,6 +407,9 @@ func (f *File) parse(reader io.Reader) (err error) {
 			}
 		}
 
+		// rolf
+		lineRaw := line
+
 		line = bytes.TrimLeftFunc(line, unicode.IsSpace)
 		if len(line) == 0 {
 			continue
@@ -461,7 +464,7 @@ func (f *File) parse(reader io.Reader) (err error) {
 
 		if inUnparseableSection {
 			section.isRawSection = true
-			section.rawBody += string(line)
+			section.rawBody += string(lineRaw)
 			continue
 		}
 
@@ -470,7 +473,7 @@ func (f *File) parse(reader io.Reader) (err error) {
 		// PATCH rolf
 		if IsErrDelimiterNotFound(err) {
 			section.isRawSection = true
-			section.rawBody += string(line)
+			section.rawBody += string(lineRaw)
 			continue
 		}
 		// END OF PATCH
